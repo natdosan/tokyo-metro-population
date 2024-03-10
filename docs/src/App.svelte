@@ -117,9 +117,11 @@
       const stationsData = await response.json(); 
 
       Object.values(stationsData).flat().forEach(station => {
+        const score = 1 - (station.ridership / station.population);
+
         const marker = new mapboxgl.Marker()
           .setLngLat(station.coordinates)
-          .setPopup(new mapboxgl.Popup().setText(`${station.name}: Daily Ridership - ${station.ridership}`))
+          .setPopup(new mapboxgl.Popup().setText(`${station.name}: Daily Ridership - ${station.ridership}, \n Score: ${score.toFixed(2)}`))
           .addTo(mapTokyo);
 
         stationMarkers.push(marker); // Store the marker reference
