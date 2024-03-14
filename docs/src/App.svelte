@@ -134,45 +134,97 @@
 </script>
 
 <style>
+  /* Styles for top and bottom text */
+  .top-text, .bottom-text {
+    padding: 20px; /* Increase padding for a more spacious feel */
+    text-align: center; /* Center align text */
+    background-color: #222; /* Dark background color for a modern look */
+    color: #fff; /* White text color for better contrast */
+    font-family: 'Roboto', sans-serif; /* Modern font */
+  }
+
+  /* Add a subtle shadow for depth */
+  .top-text, .bottom-text {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  }
+
+  /* Add rounded corners for a softer appearance */
+  .top-text, .bottom-text {
+    border-radius: 0px; 
+  }
+
+  /* Style for main content container */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align content horizontally */
+    justify-content: space-between; /* Align content with space between */
+    min-height: 100vh; /* Ensure the container takes at least the full viewport height */
+    position: relative; /* Positioning context for absolute positioning */
+  }
+
+  /* Style for the map container */
   #map-tokyo {
-    position: relative; /* Needed for absolute positioning of children */
-    height: 100vh;
+    flex: 1; /* Allow map container to grow and occupy remaining space */
+    width: 100%; /* Ensure map container takes full width */
+    height: 70vh; /* Adjust height as needed */
+    position: relative; /* Positioning context for absolute positioning */
+    border-radius: 0px; 
   }
 
+  /* Style for toggle buttons */
+  .toggle-button-container {
+    position: absolute;
+    top: 20px; /* Adjust top position as needed */
+    right: 20px; /* Adjust right position as needed */
+    z-index: 10; /* Ensure buttons stay above map layers */
+  }
+
+  /* Style for individual toggle buttons */
   .toggle-button {
-    position: absolute; /* Position the button over the map */
-    top: 20px; /* Distance from the top of the map container */
-    right: 20px; /* Distance from the right side of the map container */
-    z-index: 10; /* Ensure the button is above map layers and controls */
-    padding: 0.5rem 1rem;
-    background-color: white; /* Button background for visibility */
-    border: none; /* Optional: for style */
-    cursor: pointer; /* Optional: change cursor on hover */
-    border-radius: 5px; /* Optional: for rounded corners */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Optional: for a subtle shadow */
-  }
-
-  .map-title {
-    top: 20px; /* Adjust as needed */
-    left: 20px; /* Adjust as needed */
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 10px; /* Add some spacing between buttons */
   }
 </style>
 
-<div id="map-tokyo">
 
+<div class="main-content">
+  <!-- Top text -->
+  <div class="top-text">
+    <h1>Welcome to Tokyo Map</h1>
+    <p>Have you ever gotten lost in a massive city and couldn't find the closest train station to get to your next destination? 
+      Well, we got the solution for you! Introducing the Tokyo Map! Our motivation for this visualization is to provide the user 
+      an easy-to-use map with customization, giving the user a map with plenty of digestible information while keeping it clear and understandable.
+      We provided togglable metro stations, metro lines, as well as population ridership through geoJSON data with the click of a button; 
+      specifically, popularly used maps exclude ridership and population data, but in our map, it has a togglable feature layer in the form of a choropleth. 
+    </p>
+  </div>
+
+  <!-- Map container -->
+  <div id="map-tokyo">
+    <!-- Button container -->
+    <div class="toggle-button-container">
+      <button class="toggle-button" on:click={toggleRailwayVisibility}>
+        {isRailwayVisible ? 'Hide Railway Lines' : 'Show Railway Lines'}
+      </button>
+      <button class="toggle-button" on:click={toggleStationVisibility}>
+        {areStationsVisible ? 'Hide Stations' : 'Show Stations'}
+      </button>
+      <button class="toggle-button" on:click={toggleChoroplethVisibility}>
+        {isChoroplethVisible ? 'Hide Choropleth' : 'Show Choropleth'}
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom text -->
+  <div class="bottom-text">
+    <p>Using a choropleth allows an easy-to-interpret representation of Tokyo's population density by ward, making it unique, promoting exploration throughout the city 
+      without worry. Additionally, it allows the user to toggle between showing and hiding the 10 most popular railway stations and lines, allowing for customizability 
+      and a clean user-experience. An interesting observation of the visualization is that we can understand the population density and ridership of each railway 
+      station and area which helps evaluate the busyness of each station. Specifically, we designed a metric where we subtract the ratio of riders to the ward's 
+      relative population density from one, which gives us a negative/positive scalar, where negative scores represent a more crowded area while positive scores
+       represent a less crowded area. We chose this compared to a log of the score because the trend in our data did not seem to be exponential. 
+      The main takeaway is that we can use this metric to help users predict if their destination will be crowded and factor in commute times, which can help users to 
+      avoid busy stations if possible as well as help individuals with intense social anxiety avoid super crowded stations. And that is the Tokyo map!
+      </p>
+  </div>
 </div>
-
-<div class="map-title">Tokyo Live Roads with Metro Lines</div>
-<button class="toggle-button" on:click={toggleRailwayVisibility}>
-  {isRailwayVisible ? 'Hide Railway Lines' : 'Show Railway Lines'}
-</button>
-<button class="toggle-button" on:click={toggleStationVisibility} style="top: 80px;">
-  {areStationsVisible ? 'Hide Stations' : 'Show Stations'}
-</button>
-<button class="toggle-button" on:click={toggleChoroplethVisibility} style="top: 140px;">
-  {isChoroplethVisible ? 'Hide Choropleth' : 'Show Choropleth'}
-</button>
