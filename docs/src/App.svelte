@@ -9,6 +9,8 @@
   let areStationsVisible = false; // Initial state
   let isChoroplethVisible = false; 
   let stationMarkers = [];
+  let isTopTextVisible = true;
+  let isBottomTextVisible = false;
 
   onMount(() => {
     // Tokyo map
@@ -144,6 +146,19 @@
     isChoroplethVisible = !isChoroplethVisible;
     mapTokyo.setLayoutProperty('tokyo-population-density', 'visibility', isChoroplethVisible ? 'visible' : 'none');
   }
+  // Function to toggle the visibility of the top text
+  function toggleTopTextVisibility() {
+    isTopTextVisible = !isTopTextVisible;
+    const topTextDiv = document.getElementById('top-text');
+    topTextDiv.style.display = isTopTextVisible ? 'block' : 'none';
+  }
+
+  // Function to toggle the visibility of the bottom text
+  function toggleBottomTextVisibility() {
+    isBottomTextVisible = !isBottomTextVisible;
+    const bottomTextDiv = document.getElementById('bottom-text');
+    bottomTextDiv.style.display = isBottomTextVisible ? 'block' : 'none';
+  }
 </script>
 
 <style>
@@ -197,13 +212,36 @@
   .toggle-button {
     margin-bottom: 10px; /* Add some spacing between buttons */
   }
+
+  .legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    padding: 5px;
+    z-index: 11; /* Ensure buttons stay above map layers */
+  }
+
+  .legend-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 2px 5px;
+    font-size: 12px;
+    z-index: 11; /* Ensure buttons stay above map layers */
+  }
 </style>
 
 
 <div class="main-content">
   <!-- Top text -->
-  <div class="top-text">
+  <div id="top-text" class="top-text" style="{isTopTextVisible ? 'display: block;' : 'display: none;'}">
     <h1>Welcome to Tokyo Map</h1>
+    <button class="toggle-button" on:click={toggleTopTextVisibility}>
+      {isTopTextVisible ? 'Hide Top Text' : 'Show Top Text'}
+    </button>
     <p>Have you ever gotten lost in a massive city and couldn't find the closest train station to get to your next destination? 
       Well, we got the solution for you! Introducing the Tokyo Map! Our motivation for this visualization is to provide the user 
       an easy-to-use map with customization, giving the user a map with plenty of digestible information while keeping it clear and understandable.
@@ -225,11 +263,28 @@
       <button class="toggle-button" on:click={toggleChoroplethVisibility}>
         {isChoroplethVisible ? 'Hide Choropleth' : 'Show Choropleth'}
       </button>
+      <button class="toggle-button" on:click={toggleTopTextVisibility}>
+        {isTopTextVisible ? 'Hide Top Text' : 'Show Top Text'}
+      </button>
+      <button class="toggle-button" on:click={toggleBottomTextVisibility}>
+        {isBottomTextVisible ? 'Hide Bottom Text' : 'Show Bottom Text'}
+      </button>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item" style="background-color: #ffffff;">0</div>
+      <div class="legend-item" style="background-color: #614144;">100,000</div>
+      <div class="legend-item" style="background-color: #802A37;">300,000</div>
+      <div class="legend-item" style="background-color: #A51C2A;">500,000</div>
+      <div class="legend-item" style="background-color: #DE0D0D;">700,000</div>
+      <div class="legend-item" style="background-color: #FF9641;">1,000,000</div>
     </div>
   </div>
 
+
+
   <!-- Bottom text -->
-  <div class="bottom-text">
+  <div id="bottom-text" class="bottom-text" style="{isBottomTextVisible ? 'display: block;' : 'display: none;'}">
     <p>Using a choropleth allows an easy-to-interpret representation of Tokyo's population density by ward, making it unique, promoting exploration throughout the city 
       without worry. Additionally, it allows the user to toggle between showing and hiding the 10 most popular railway stations and lines, allowing for customizability 
       and a clean user-experience. An interesting observation of the visualization is that we can understand the population density and ridership of each railway 
@@ -238,6 +293,9 @@
        represent a less crowded area. We chose this compared to a log of the score because the trend in our data did not seem to be exponential. 
       The main takeaway is that we can use this metric to help users predict if their destination will be crowded and factor in commute times, which can help users to 
       avoid busy stations if possible as well as help individuals with intense social anxiety avoid super crowded stations. And that is the Tokyo map!
-      </p>
+    </p>
+    <button class="toggle-button" on:click={toggleBottomTextVisibility}>
+      {isBottomTextVisible ? 'Hide Bottom Text' : 'Show Bottom Text'}
+    </button>
   </div>
 </div>
