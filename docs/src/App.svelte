@@ -101,13 +101,26 @@
         }
       });
 
+      mapTokyo.on('mousemove', 'tokyo-population-density', (e) => {
+        if (e.features.length > 0) {
+          const feature = e.features[0];
+          const population = feature.properties.population; // Assuming there's a 'population' property in your geojson data
+          const wardName = feature.properties.N03_004;
+          const popupText = population ? `${wardName} Population: ${population}` : 'No population data available';
+          popup.setLngLat(e.lngLat)
+              .setText(popupText)
+              .addTo(mapTokyo);
+        }
+      });
+
       const response = await fetch('/stations.json'); 
       const stationsData = await response.json(); 
 
       Object.values(stationsData).flat().forEach(station => {
+        const score = 1 - (station.ridership / station.population);
         const marker = new mapboxgl.Marker()
           .setLngLat(station.coordinates)
-          .setPopup(new mapboxgl.Popup().setText(`${station.name}: Daily Ridership - ${station.ridership}`))
+          .setPopup(new mapboxgl.Popup().setText(`${station.name}: Daily Ridership - ${station.ridership}, \n Score: ${score.toFixed(2)}`))
           .addTo(mapTokyo);
 
         stationMarkers.push(marker); // Store the marker reference
