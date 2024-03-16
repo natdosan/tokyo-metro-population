@@ -238,7 +238,7 @@
 <div class="main-content">
   <!-- Top text -->
   <div id="top-text" class="top-text" style="{isTopTextVisible ? 'display: block;' : 'display: none;'}">
-    <h1>Welcome to Tokyo Map</h1>
+    <h1>Let's Explore Tokyo's Transportation and Population!</h1>
     <button class="toggle-button" on:click={toggleTopTextVisibility}>
       {isTopTextVisible ? 'Hide Top Text' : 'Show Top Text'}
     </button>
