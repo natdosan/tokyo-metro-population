@@ -242,7 +242,7 @@
     <p>Have you ever gotten lost in a massive city and couldn't find the closest train station to get to your next destination? 
       Well, we got the solution for you! Introducing the Tokyo Map! Our motivation for this visualization is to provide the user 
       an easy-to-use map with customization, giving the user a map with plenty of digestible information while keeping it clear and understandable.
-      We provided togglable metro stations, metro lines, as well as population ridership through geoJSON data with the click of a button; 
+      We provided togglable metro stations, metro lines, as well as population ridership through GeoJSON data with the click of a button; 
       specifically, popularly used maps exclude ridership and population data, but in our map, it has a togglable feature layer in the form of a choropleth. 
     </p>
   </div>
